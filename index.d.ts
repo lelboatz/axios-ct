@@ -47,12 +47,28 @@ export interface RequestOptions {
      * Function to parse the response body. Defaults to `JSON.parse()` if `parseBody` is `true`.
      * @param body - The response body.
      */
-    parser?: (body: any) => any;
+    bodyParser?: Function
 
     /**
      * Whether to use the default User-Agent header. Defaults to `true`.
      */
     useDefaultUserAgent?: boolean;
+    /**
+     * Whether to automatically JSON.parse the response body.
+     *
+     * @deprecated Use `parseBody` instead as this is deprecated.
+     */
+    json?: boolean;
+
+    /**
+     * Automatically parse JSON headers. Defaults to `true`.
+     */
+    parseHeaders?: boolean;
+
+    /**
+     * Function to parse the response headers. Defaults to `JSON.parse()` if `parseHeaders` is `true`.
+     */
+    headersParser?: Function
 }
 
 export interface RequestOptionsNoUrl {
@@ -117,6 +133,15 @@ export interface RequestOptionsNoUrl {
      * @deprecated Use `parseBody` instead as this is deprecated.
      */
     json?: boolean;
+    /**
+     * Automatically parse JSON headers. Defaults to `true`.
+     */
+    parseHeaders?: boolean;
+
+    /**
+     * Function to parse the response headers. Defaults to `JSON.parse()` if `parseHeaders` is `true`.
+     */
+    headersParser?: Function
 }
 
 export interface AxiosResponse<T = any> {
@@ -221,7 +246,7 @@ interface Axios {
 declare const axios: Axios;
 
 /**
- * Send a request using the traditional requestV2-DO-NOT-IMPORT-FROM-HERE syntax. Defaults to GET.
+ * Send a request using the traditional request syntax. Defaults to GET.
  * @param options {RequestOptions} - The options to use for this request
  * @returns {Promise<AxiosResponse>} - The response object as a promise
  * @throws {AxiosError}

@@ -1,4 +1,4 @@
-import { DoNotImportThisFunction as oldRequest } from "./requestV2-DO-NOT-IMPORT-FROM-HERE"
+import { DoNotImportThisFunction as oldRequest } from "./request"
 
 const axios = {
     /**

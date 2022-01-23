@@ -1,5 +1,6 @@
 import { Promise } from '../../PromiseV2';
 import RequestObj from './RequestObj';
+const File = Java.type('java.io.File');
 
 export function DoNotImportThisFunction(options) {
   options.method = options.method?.toUpperCase()?.trim() ?? 'GET';
@@ -10,10 +11,13 @@ export function DoNotImportThisFunction(options) {
   options.query = options.query ?? {};
   options.followRedirect = options.followRedirect ?? true;
   options.parseBody = options.parseBody ?? true;
-  options.parser = options.parser ?? JSON.parse;
+  options.bodyParser = options.parser ?? JSON.parse;
+  options.parseHeaders = options.parseHeaders ?? true;
+  options.headersParser = options.headersParser ?? JSON.parse;
+  options.useDefaultUserAgent = options.useDefaultUserAgent ?? true;
 
   if (options.useDefaultUserAgent && !options.headers['User-Agent']) {
-    options.headers['User-Agent'] = `axios/${require('../metadata.json').version} (ChatTriggers)`;
+    options.headers['User-Agent'] = `axios/${JSON.parse(FileLib.read(Config.modulesFolder + "/axios/metadata.json")).version} (ChatTriggers)`;
   }
 
   if (options.json === true) {

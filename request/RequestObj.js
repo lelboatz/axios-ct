@@ -72,23 +72,30 @@ function RequestObj(options, resolve, reject) {
         reader.close();
         conn.disconnect();
 
-        if (options.parseBody && content) {
+        let headers = {}
+        let headerFields = conn.getHeaderFields();
+        headerFields.forEach((key, value) => {
+          if (options.parseHeaders) {
+            try {
+              value = (options.headersParser)(value);
+            } catch (e) {
+              if (options.headersParser !== JSON.parse) {
+                throw e;
+              }
+            }
+          }
+          headers[key] = value[0];
+        });
+
+        if (options.parseBody && content && headers['Content-Type'] === 'application/json') {
           try {
-            content = (options.parser)(content);
+            content = (options.bodyParser)(content);
           } catch (e) {
-            if (options.parser !== JSON.parse) {
+            if (options.bodyParser !== JSON.parse) {
               throw e;
             }
           }
         }
-
-        let headers = {}
-        let headerFields = conn.getHeaderFields();
-        headerFields.forEach((value, key) => {
-          if (key) {
-            headers[key] = value;
-          }
-        });
 
         if (statusCode > 299) {
           reject({
@@ -114,10 +121,17 @@ function RequestObj(options, resolve, reject) {
         let statusCode = parseInt(conn.getResponseCode());
         let headers = {}
         let headerFields = conn.getHeaderFields();
-        headerFields.forEach((value, key) => {
-          if (key) {
-            headers[key] = value;
+        headerFields.forEach((key, value) => {
+          if (options.parseHeaders) {
+            try {
+              value = (options.headersParser)(value);
+            } catch (e) {
+              if (options.headersParser !== JSON.parse) {
+                throw e;
+              }
+            }
           }
+          headers[key] = value[0];
         });
 
         if (statusCode > 299) {
@@ -143,8 +157,10 @@ function RequestObj(options, resolve, reject) {
           let wr;
 
           try {
+            let body = JSON.stringify(options.body);
+            conn.setRequestProperty('Content-Length', new JString(body).getBytes('UTF-8').length.toString());
             wr = new JOutputStreamWriter(conn.getOutputStream());
-            wr.write(JSON.stringify(options.body));
+            wr.write(body);
             wr.close();
           } catch (e) {
             print(e);
@@ -184,23 +200,30 @@ function RequestObj(options, resolve, reject) {
         reader.close();
         conn.disconnect();
 
-        if (options.parseBody && content) {
+        let headers = {}
+        let headerFields = conn.getHeaderFields();
+        headerFields.forEach((key, value) => {
+          if (options.parseHeaders) {
+            try {
+              value = (options.headersParser)(value);
+            } catch (e) {
+              if (options.headersParser !== JSON.parse) {
+                throw e;
+              }
+            }
+          }
+          headers[key] = value[0];
+        });
+
+        if (options.parseBody && content && headers['Content-Type'] === 'application/json') {
           try {
-            content = (options.parser)(content);
+            content = (options.bodyParser)(content);
           } catch (e) {
-            if (options.parser !== JSON.parse) {
+            if (options.bodyParser !== JSON.parse) {
               throw e;
             }
           }
         }
-
-        let headers = {}
-        let headerFields = conn.getHeaderFields();
-        headerFields.forEach((value, key) => {
-          if (key) {
-            headers[key] = value;
-          }
-        });
 
         if (statusCode > 299) {
           reject({
