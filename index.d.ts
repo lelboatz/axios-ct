@@ -40,9 +40,19 @@ export interface RequestOptions {
      */
     followRedirect?: boolean;
     /**
-     * Automatically parse the response body as JSON. Defaults to `false`.
+     * Automatically parse the response body. Defaults to `true`.
      */
-    json?: boolean;
+    parseBody?: boolean;
+    /**
+     * Function to parse the response body. Defaults to `JSON.parse()` if `parseBody` is `true`.
+     * @param body - The response body.
+     */
+    parser?: (body: any) => any;
+
+    /**
+     * Whether to use the default User-Agent header. Defaults to `true`.
+     */
+    useDefaultUserAgent?: boolean;
 }
 
 export interface RequestOptionsNoUrl {
@@ -87,7 +97,24 @@ export interface RequestOptionsNoUrl {
      */
     followRedirect?: boolean;
     /**
-     * Automatically parse the response body as JSON. Defaults to `false`.
+     * Automatically parse the response body. Defaults to `true`.
+     */
+    parseBody?: boolean;
+    /**
+     * Function to parse the response body. Defaults to `JSON.parse()` if `parseBody` is `true`.
+     * @param body - The response body.
+     */
+    parser?: (body: any) => any;
+
+    /**
+     * Whether to use the default User-Agent header. Defaults to `true`.
+     */
+    useDefaultUserAgent?: boolean;
+
+    /**
+     * Whether to automatically JSON.parse the response body.
+     *
+     * @deprecated Use `parseBody` instead as this is deprecated.
      */
     json?: boolean;
 }

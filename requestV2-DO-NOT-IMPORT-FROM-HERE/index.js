@@ -9,7 +9,19 @@ export function DoNotImportThisFunction(options) {
   options.headers = options.headers ?? {};
   options.query = options.query ?? {};
   options.followRedirect = options.followRedirect ?? true;
-  options.json = options.json ?? false;
+  options.parseBody = options.parseBody ?? true;
+  options.parser = options.parser ?? JSON.parse;
+
+  if (options.useDefaultUserAgent && !options.headers['User-Agent']) {
+    options.headers['User-Agent'] = `axios/${require('../metadata.json').version} (ChatTriggers)`;
+  }
+
+  if (options.json === true) {
+    options.parseBody = true;
+    options.parser = JSON.parse;
+  } else if (options.json === false) {
+    options.parseBody = false;
+  }
 
   return new Promise((resolve, reject) => RequestObj(options, resolve, reject));
 }

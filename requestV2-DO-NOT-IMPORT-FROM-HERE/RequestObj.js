@@ -72,8 +72,14 @@ function RequestObj(options, resolve, reject) {
         reader.close();
         conn.disconnect();
 
-        if (options.json && content) {
-          content = JSON.parse(content);
+        if (options.parseBody && content) {
+          try {
+            content = (options.parser)(content);
+          } catch (e) {
+            if (options.parser !== JSON.parse) {
+              throw e;
+            }
+          }
         }
 
         let headers = {}
@@ -178,8 +184,14 @@ function RequestObj(options, resolve, reject) {
         reader.close();
         conn.disconnect();
 
-        if (options.json && content) {
-          content = JSON.parse(content);
+        if (options.parseBody && content) {
+          try {
+            content = (options.parser)(content);
+          } catch (e) {
+            if (options.parser !== JSON.parse) {
+              throw e;
+            }
+          }
         }
 
         let headers = {}
