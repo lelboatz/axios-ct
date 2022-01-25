@@ -26,14 +26,15 @@ let JGZIPInputStream = Java.type('java.util.zip.GZIPInputStream');
 
 function RequestObj(options, resolve, reject) {
 
-  function getQueryString(options) {
+  function getQueryString(query) {
     let queryString = '';
-    for (const [key, value] of Object.entries(options)) {
-      if (options.hasOwnProperty(key)) {
-        queryString += `${JURLEncoder.encode(key, 'UTF-8')}=${JURLEncoder.encode(value, 'UTF-8')}&`;
+    for (let key in query) {
+      if (queryString !== '') {
+        queryString += '&';
       }
+      queryString += JURLEncoder.encode(key, 'UTF-8') + '=' + JURLEncoder.encode(query[key], 'UTF-8');
     }
-    return queryString.length > 0 ? queryString.substr(0, queryString.length - 1) : queryString;
+    return queryString;
   }
 
   new Thread(() => {
@@ -87,7 +88,7 @@ function RequestObj(options, resolve, reject) {
           headers[key] = value[0];
         });
 
-        if (options.parseBody && content && headers['Content-Type'] === 'application/json') {
+        if (options.parseBody && content) {
           try {
             content = (options.bodyParser)(content);
           } catch (e) {
@@ -215,7 +216,7 @@ function RequestObj(options, resolve, reject) {
           headers[key] = value[0];
         });
 
-        if (options.parseBody && content && headers['Content-Type'] === 'application/json') {
+        if (options.parseBody && content) {
           try {
             content = (options.bodyParser)(content);
           } catch (e) {
@@ -229,6 +230,7 @@ function RequestObj(options, resolve, reject) {
           reject({
             code: statusCode,
             response: {
+              data: content,
               status: statusCode,
               statusText: conn.getResponseMessage(),
               headers

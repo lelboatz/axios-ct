@@ -3,7 +3,7 @@
   "name": "axios",
   "creator": "eznick (credit: Ecolsson & McPqndq)",
   "description": "Improved version of requestV2 created to support more HTTP methods. Responses are formatted almost identically to axios.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "requires": [
     "PromiseV2"
   ],
