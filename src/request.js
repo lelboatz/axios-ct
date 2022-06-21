@@ -34,7 +34,7 @@ export function request(options) {
             }
 
             const connection = new URL(options.url).openConnection()
-            connection.setSSLSocketFactory(socketFactory)
+            if (options.url.startsWith("https")) connection.setSSLSocketFactory(socketFactory)
             connection.setRequestMethod(options.method)
             connection.setDoInput(true)
             if (outputMethods.includes(options.method)) {

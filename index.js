@@ -136,4 +136,16 @@ const axios = {
     }
 }
 
-export { request, axios as default };
+/**
+ * Send a request using the traditional requestV2 syntax.
+ * @param options {RequestOptions} - The options to use for this request
+ * @returns {Promise<AxiosResponse>} - The response object as a promise
+ * @throws {AxiosError}
+ * @deprecated Use request instead
+ */
+function defaultRequest(options) {
+    console.warn("defaultRequest is deprecated. Use request instead.");
+    return request(options)
+}
+
+export { defaultRequest, request, axios as default };
