@@ -3,56 +3,68 @@ export interface RequestOptions {
      * The URL to send the request to.
      */
     url: string;
+
     /**
      * The http method to use, defaults to "GET".
      */
     method?: "GET" | "POST" | "PUT" | "DELETE" | "HEAD" | "OPTIONS" | "PATCH";
+
     /**
      * The timeout before aborting the request in milliseconds. Defaults to Infinity.
      */
     timeout?: number;
+
     /**
      * The time to wait between sending a request and receiving a response before aborting the request in milliseconds. Defaults to the value of `timeout`.
      */
     connectTimeout?: number;
+
     /**
      * The time to wait for reading a response's body before aborting the request in milliseconds. Defaults to the value of `timeout`.
      */
     readTimeout?: number;
+
     /**
      * The http headers to send with the request.
      */
     headers?: Record<string, string>;
+
     /**
      * Query parameters to append to the URL.
      */
     query?: Record<string, string>;
+
     /**
      * The body to send with the request. Accepts an object or a string and will be serialized using `JSON.stringify()`. Sets the Content-Type header to `application/json charset=UTF-8` and takes precedence over `form`.
      */
     body?: string | Record<string, unknown>;
+
     /**
      * The form data to send with the request. Sets the Content-Type header to `application/x-www-form-urlencoded`.
      */
     form?: Record<string, unknown>;
+
     /**
      * Whether to follow redirects. Defaults to `true`.
      */
     followRedirect?: boolean;
+
     /**
      * Automatically parse the response body. Defaults to `true`.
      */
     parseBody?: boolean;
+
     /**
      * Function to parse the response body. Defaults to `JSON.parse()` if `parseBody` is `true`.
      * @param body - The response body.
      */
-    bodyParser?: Function
+    bodyParser?: Function;
 
     /**
      * Whether to use the default User-Agent header. Defaults to `true`.
      */
     useDefaultUserAgent?: boolean;
+
     /**
      * Whether to automatically JSON.parse the response body.
      *
@@ -69,6 +81,11 @@ export interface RequestOptions {
      * Function to parse the response headers. Defaults to `JSON.parse()` if `parseHeaders` is `true`.
      */
     headersParser?: Function
+
+    /**
+     * Function to determine which http status codes result in promise rejection. Defaults to status < 299.
+     */
+    validateStatus?: (status: number) => boolean;
 }
 
 export interface RequestOptionsNoUrl {

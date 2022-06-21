@@ -1,4 +1,4 @@
-import { DoNotImportThisFunction as oldRequest } from "./request"
+import { request } from "./src/request";
 
 const axios = {
     /**
@@ -18,7 +18,7 @@ const axios = {
 
         options.method = "GET";
 
-        return defaultRequest(options)
+        return request(options)
     },
     /**
      * Send a DELETE request
@@ -37,7 +37,7 @@ const axios = {
 
         options.method = "DELETE";
 
-        return defaultRequest(options)
+        return request(options)
     },
     /**
      * Send an OPTIONS request
@@ -56,7 +56,7 @@ const axios = {
 
         options.method = "OPTIONS";
 
-        return defaultRequest(options)
+        return request(options)
     },
     /**
      * Send a HEAD request
@@ -75,7 +75,7 @@ const axios = {
 
         options.method = "HEAD";
 
-        return defaultRequest(options)
+        return request(options)
     },
     /**
      * Send a POST request
@@ -94,7 +94,7 @@ const axios = {
 
         options.method = "POST";
 
-        return defaultRequest(options)
+        return request(options)
     },
     /**
      * Send a PUT request
@@ -113,7 +113,7 @@ const axios = {
 
         options.method = "PUT";
 
-        return defaultRequest(options)
+        return request(options)
     },
     /**
      * Send a PATCH request
@@ -132,22 +132,8 @@ const axios = {
 
         options.method = "PATCH";
 
-        return defaultRequest(options)
+        return request(options)
     }
 }
 
-/**
- * Send a request using the traditional requestV2 syntax.
- * @param options {RequestOptions} - The options to use for this request
- * @returns {Promise<AxiosResponse>} - The response object as a promise
- * @throws {AxiosError}
- */
-function defaultRequest(options) {
-    if (!options.url) {
-        throw new Error("No request URL specified");
-    }
-    return oldRequest(options)
-}
-
-export { defaultRequest }
-export default axios
+export { request, axios as default };
